@@ -6,12 +6,8 @@ let pokemonList = [{name: 'butterfree', type: ['bug','flying'], abilities: ['com
                    {name: 'squirtle', type: 'water', abilities: ['rain-dish','torrent'], height: 0.5, },
                 ];
 
-for (let i = 0; i < pokemonList.length; i++) {
-    let types = Array.isArray(pokemonList[i].type) ? pokemonList[i].type: [pokemonList[i].type];
-    if (pokemonList[i].height > 1 && types.includes('flying')) {
-    document.write('<h1>' + pokemonList[i].name + ' (height: ' + pokemonList[i].height + ')' + ' -' + ' Wow, that\'s a big pokemon and can also fly!' + '</h1>');
-    } else {
-        document.write('<h1>' + pokemonList[i].name + ' (height: ' + pokemonList[i].height + ')' + '</h1>');
-    }
-}
+
+pokemonList.forEach(function(pokemon) {
+    console.log(pokemon.name + ' is a ' + pokemon.type + ' pokemon, and has the abilities of ' + pokemon.abilities + ' a height of ' + pokemon.height + '.')
+});
 
