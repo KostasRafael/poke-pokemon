@@ -43,24 +43,25 @@ let pokemonRepository = (function () {
   }
 
   function add(item) {
-    pokemonList.push(item);
+    typeof item === "object"
+      ? pokemonList.push(item)
+      : console.log("invalid input, expected object.");
   }
-
 
   return {
     getAll: getAll,
     add: add,
   };
-
-  pokemonRepository.add(
-   {
-      name: 'Chaos',
-      type: 'grass',
-      abilities: 'snore',
-      height: 5,
-   }
-  );
 })();
+
+pokemonRepository.add({
+  name: "Sandslash",
+  type: "ground",
+  abilities: ["Sand-veil", "Sand-rush"],
+  height: 1,
+});
+
+
 
 pokemonRepository.getAll().forEach(function (pokemon) {
   console.log(
@@ -69,7 +70,7 @@ pokemonRepository.getAll().forEach(function (pokemon) {
       pokemon.type +
       " pokemon, and has the abilities of " +
       pokemon.abilities +
-      " a height of " +
+      " and the height of " +
       pokemon.height +
       "."
   );
