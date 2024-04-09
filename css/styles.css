@@ -1,4 +1,6 @@
 .pokemon-button {
+    display: inline-block;
+    min-width: 200px;
     background-color: rgb(182, 44, 67);
     border: none;
     color: rgb(212, 202, 202);
@@ -9,4 +11,9 @@
     font-size: 16px;
     margin: 4px 2px;
     border-radius: 10%;
+}
+
+.loading-message {
+    font-size: 100px;
+    text-align: center;
 }

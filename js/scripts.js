@@ -1,100 +1,111 @@
-
-//Declaring the pokemonRepository variable that stores the IIFE.
-//Declaring the pokemonList variable locally, within the IIFE.
-
+// pokemonRepository variable that holds the IIFE
 let pokemonRepository = (function () {
-  let pokemonList = [
-    {
-      name: "Butterfree",
-      type: ["bug", "flying"],
-      abilities: ["compoundeyes", "tinted-lens"],
-      height: 1.1,
-    },
-    {
-      name: "Bulbasaur",
-      type: ["grass", "poison"],
-      abilities: ["chlorophyll", "overgrow"],
-      height: 0.7,
-    },
-    {
-      name: "Charmander",
-      type: "fire",
-      abilities: ["blaze", "solar-power"],
-      height: 0.6,
-    },
-    {
-      name: "Ninetales",
-      type: "fire",
-      abilities: ["flash-fire", "drought"],
-      height: 1.1,
-    },
-    {
-      name: "Pikachu",
-      type: "electric",
-      abilities: ["static", "lightningrod"],
-      height: 0.4,
-    },
-    {
-      name: "Squirtle",
-      type: "water",
-      abilities: ["rain-dish", "torrent"],
-      height: 0.5,
-    },
-  ];
+  let pokemonList = [];
+  let apiUrl = "https://pokeapi.co/api/v2/pokemon/"; // The URL of the external API
 
-  //Declaring all the functions
-  function getAll() {
+  // returns the pokemonList in order to be able to access it from outside the IIFE
+  function returnPokemonList() {
     return pokemonList;
   }
 
-  function add(item) {
-    typeof item === "object"
-      ? pokemonList.push(item)
-      : console.log("invalid input, expected object.");
+  // enables us to add pokemons to the pokemonList variable
+  function add(pokemon) {
+    pokemonList.push(pokemon);
   }
 
-  //manipulating the DOM in order to create an unordered list that has the pokemons as its list items.
+  // When called, will create a list item buttoe with the name of the pokemon.
   function addListItem(pokemon) {
-    let pokemonUnorderedList = document.querySelector('.pokemon-list');
-    let listItem = document.createElement('li');
-    let button = document.createElement('button');
+    let ul = document.querySelector(".ul");
+    let liUl = document.createElement("li");
+    let button = document.createElement("button");
     button.innerText = pokemon.name;
-    button.classList.add('pokemon-button');
-    listItem.appendChild(button);
-    pokemonUnorderedList.appendChild(listItem);
-    consoleDetails(button, pokemon);
-    }
-  //Adding an event listener so when the button is clicked the pokemon is displayed on the console.
-    function consoleDetails(button, pokemon) {
-      button.addEventListener('click', function() {
-        showDetails(pokemon)
-      })
-    }
-
-  function showDetails(pokemon) {
-    console.log(pokemon);
+    button.classList.add("pokemon-button");
+    liUl.appendChild(button);
+    ul.appendChild(liUl);
+    button.addEventListener("click", function (event) {  // Everytime the button is clicked, the details of the respective pokemon are console loged.
+      showDetails(pokemon);
+    });
   }
 
-  //Declaring the returns of the IIFE, which are the functions written above.
+  //Defines loading which holds the loading message
+  let loading = document.createElement("h1");
+  loading.innerText = "loading...";
+  loading.classList.add("loading-message");
+
+  //When called will display the loading message
+  function showLoadingMessage() {
+    document.body.appendChild(loading);
+  }
+
+  //When called will hide the loading message
+  function hideLoadingMessage() {
+    loading.parentElement.removeChild(loading);
+  }
+
+  //fetches the pokemons, creates the pokemon objects, and adds them to the pokemonList variable.
+  function loadList() {
+    pokemonRepository.showLoadingMessage(); // To display the loading message after the loadList function is called.
+    return fetch(apiUrl)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        json.results.forEach(function (item) {
+          let pokemon = {
+            name: item.name,
+            detailsUrl: item.url,
+          };
+          setTimeout(pokemonRepository.hideLoadingMessage, 1000); // To hide the loading message once the promise is resolved. The setTimeout method is used for testin reasons.
+          add(pokemon);
+        });
+      })
+      .catch(function (e) {
+        console.error(e);
+        setTimeout(pokemonRepository.hideLoadingMessage, 1000); // To hide the loading message once the promise is rejected. The setTimeout method is used for testing reasons.
+      });
+  }
+
+  // fetches the details of the pokemon object and adds them to the item.
+  function loadDetails(item) {
+    pokemonRepository.showLoadingMessage();
+    let url = item.detailsUrl;
+    return fetch(url)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (details) {
+        item.imageURL = details.sprites.front_default;
+        item.height = details.height;
+        item.types = details.types;
+      })
+      .catch(function (e) {
+        console.error(e);
+        setTimeout(pokemonRepository.hideLoadingMessage, 1000);
+      });
+  }
+  // When called will console log the details of the pokemon.
+  function showDetails(item) {
+    pokemonRepository.loadDetails(item).then(function () {
+      console.log(item);
+    });
+  }
+
+  // Returns of all the functions in order to be able to access the functions from outside the IIFE.
   return {
-    getAll: getAll,
+    returnPokemonList: returnPokemonList,
     add: add,
     addListItem: addListItem,
+    loadList: loadList,
     showDetails: showDetails,
-    consoleDetails: consoleDetails,
+    loadDetails: loadDetails,
+    showLoadingMessage: showLoadingMessage,
+    hideLoadingMessage: hideLoadingMessage,
   };
 })();
 
-//Adding a pokemon object to the pokemonList variable using the add() function.
-pokemonRepository.add({
-  name: "Sandslash",
-  type: "ground",
-  abilities: ["Sand-veil", "Sand-rush"],
-  height: 1,
-});
-
-//Adding the forEach() method to run the addListItem(pokemon) function on every object within the array in the pokemonList variable.
-pokemonRepository.getAll().forEach(function(pokemon) {
-  pokemonRepository.addListItem(pokemon);
-
+//Calling loadList to fetch the pokemons, then calling returnPokemonList to insert all the pokemons in the pokemonList variable, and then, using the forEach method to call addListItem for each pokemon in the pokemonList variable.
+pokemonRepository.loadList().then(function () {
+  pokemonRepository.returnPokemonList().forEach(function (pokemon) {
+    pokemonRepository.addListItem(pokemon);
+  });
 });
