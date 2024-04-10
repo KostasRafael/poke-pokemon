@@ -4,7 +4,7 @@ let pokemonRepository = (function () {
   let apiUrl = "https://pokeapi.co/api/v2/pokemon/"; // The URL of the external API
 
   // returns the pokemonList in order to be able to access it from outside the IIFE
-  function returnPokemonList() {
+  function getAll() {
     return pokemonList;
   }
 
@@ -39,8 +39,10 @@ let pokemonRepository = (function () {
 
   //When called will hide the loading message
   function hideLoadingMessage() {
-    loading.parentElement.removeChild(loading);
+    if (document.body.contains(loading)) {
+      document.body.removeChild(loading);
   }
+}
 
   //fetches the pokemons, creates the pokemon objects, and adds them to the pokemonList variable.
   function loadList() {
@@ -55,14 +57,14 @@ let pokemonRepository = (function () {
             name: item.name,
             detailsUrl: item.url,
           };
-          setTimeout(pokemonRepository.hideLoadingMessage, 1000); // To hide the loading message once the promise is resolved. The setTimeout method is used for testin reasons.
-          add(pokemon);
+          pokemonRepository.add(pokemon);
         });
       })
       .catch(function (e) {
         console.error(e);
-        setTimeout(pokemonRepository.hideLoadingMessage, 1000); // To hide the loading message once the promise is rejected. The setTimeout method is used for testing reasons.
-      });
+   }).finally(() => {
+    hideLoadingMessage();
+   });
   }
 
   // fetches the details of the pokemon object and adds them to the item.
@@ -92,7 +94,7 @@ let pokemonRepository = (function () {
 
   // Returns of all the functions in order to be able to access the functions from outside the IIFE.
   return {
-    returnPokemonList: returnPokemonList,
+    getAll: getAll,
     add: add,
     addListItem: addListItem,
     loadList: loadList,
@@ -103,9 +105,9 @@ let pokemonRepository = (function () {
   };
 })();
 
-//Calling loadList to fetch the pokemons, then calling returnPokemonList to insert all the pokemons in the pokemonList variable, and then, using the forEach method to call addListItem for each pokemon in the pokemonList variable.
+//Calling loadList to fetch the pokemons, then calling getAll to insert all the pokemons in the pokemonList variable, and then, using the forEach method to call addListItem for each pokemon in the pokemonList variable.
 pokemonRepository.loadList().then(function () {
-  pokemonRepository.returnPokemonList().forEach(function (pokemon) {
+  pokemonRepository.getAll().forEach(function (pokemon) {
     pokemonRepository.addListItem(pokemon);
   });
 });
