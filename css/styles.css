@@ -1,19 +1,63 @@
 .pokemon-button {
-    display: inline-block;
-    min-width: 200px;
-    background-color: rgb(182, 44, 67);
-    border: none;
-    color: rgb(212, 202, 202);
-    padding: 16px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    border-radius: 10%;
+  display: inline-block;
+  min-width: 200px;
+  background-color: rgb(182, 44, 67);
+  border: none;
+  color: rgb(212, 202, 202);
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 10%;
 }
 
 .loading-message {
-    font-size: 100px;
-    text-align: center;
+  font-size: 100px;
+  text-align: center;
+}
+
+#modal-container {
+  display: none;
+}
+
+#modal-container.is-visible {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: rgb(255, 192, 192, 0.5);
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  z-index: 999;
+  display: grid;
+  text-align: center;
+}
+
+.modal {
+  margin: auto;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: white;
+  padding: 15px;
+  max-width: 700px;
+  text-align: left;
+}
+
+.modal-close {
+  float: right;
+  -webkit-appearance: none;
+  border: 0;
+  background: none;
+  color: #777;
+  text-decoration: underline;
+}
+
+.modal h1 {
+  margin-top: 0;
+}
+
+.modal p {
+  margin-bottom: 0;
 }
