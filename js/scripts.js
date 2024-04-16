@@ -5,6 +5,7 @@ let pokemonRepository = (function () {
   let modalContainer = document.querySelector('#modal-container');
 // makes the modalContainer visible and appends the modal to it  
 function showModal(name, height, image) {
+  modalContainer.innerHTML = '';
   let closeButtonElement = document.createElement('button');
     closeButtonElement.classList.add('modal-close');
     closeButtonElement.innerText = 'Close';
@@ -13,7 +14,7 @@ function showModal(name, height, image) {
     modal.classList.add('modal');
     modalContainer.appendChild(modal);
     let imageElement = document.createElement('img');
-    imageElement.src = image; //wfefeferf
+    imageElement.src = image; 
     let modalTitle = document.createElement('h1');
     modalTitle.innerText = name;
     let modalText = document.createElement('p');
@@ -36,8 +37,6 @@ function showModal(name, height, image) {
   });
 
   modalContainer.addEventListener('click', (e) => {
-    // Since this is also triggered when clicking INSIDE the modal
-    // We only want to close if the user clicks directly on the overlay
     let target = e.target;
     if (target === modalContainer) {
       hideModal();
@@ -123,8 +122,10 @@ function showModal(name, height, image) {
       })
       .catch(function (e) {
         console.error(e);
-        setTimeout(pokemonRepository.hideLoadingMessage, 1000);
-      });
+      })
+        .finally(() => {
+          hideLoadingMessage();
+        })
   }
 
   return {
@@ -136,7 +137,7 @@ function showModal(name, height, image) {
     loadDetails: loadDetails,
     showLoadingMessage: showLoadingMessage,
     hideLoadingMessage: hideLoadingMessage,
-    // showModal: showModal,
+    showModal: showModal,
   };
 })();
 
