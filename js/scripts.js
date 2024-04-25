@@ -30,6 +30,7 @@ let pokemonRepository = (function () {
     imageElementBack.attr("src", pokemon.imageUrlBack);
     let heightElement = $("<p>" + "height: " + pokemon.height + "</p>");
     let weightElement = $("<p>" + "weight: " + pokemon.weight + "</p>");
+    let typesElement = $("<p>" + "types: " + pokemon.types + "</p>");
     let abilitiesElement = $(
       "<p>" + "abilities: " + pokemon.abilities + "</p>"
     );
@@ -39,6 +40,7 @@ let pokemonRepository = (function () {
     modalBody.append(imageElementBack);
     modalBody.append(heightElement);
     modalBody.append(weightElement);
+    modalBody.append(typesElement);
     modalBody.append(abilitiesElement);
   }
 
@@ -60,8 +62,6 @@ let pokemonRepository = (function () {
     liUl.appendChild(button);
     ul.appendChild(liUl);
   }
-
-  
 
   let loading = document.createElement("h1");
   loading.innerText = "loading...";
@@ -109,10 +109,13 @@ let pokemonRepository = (function () {
         return response.json();
       })
       .then(function (details) {
-        item.image = details.sprites.front_default; 
-        item.height = details.height; 
+        item.image = details.sprites.front_default;
+        item.height = details.height;
         item.weight = details.weight;
-        item.abilities = details.abilities;
+        item.types = details.types.map((type) => type.type.name).join(', ');
+        item.abilities = details.abilities
+          .map((ability) => ability.ability.name)
+          .join(", ");
       })
 
       .catch(function (e) {
@@ -137,6 +140,6 @@ let pokemonRepository = (function () {
 
 pokemonRepository.loadList().then(function () {
   pokemonRepository.getAll().forEach(function (pokemon) {
-    pokemonRepository.addListItem(pokemon); 
+    pokemonRepository.addListItem(pokemon);
   });
 });
