@@ -12,6 +12,17 @@
 
 <body>
 
+    <nav class="navbar navbar-expand{-sm|-md|-lg|-xl}">
+        <div class="logo-div">
+            <img class="logo" src="./images/logo.jpg" alt="pokemon logo">
+            <h1 class="tittle">Poke-Pokemon</h1>
+        </div>
+        <form id="search">
+            <label for="pokemon-input">Poke your pokemon</label>
+            <input id="pokemon-input" onkeyup="pokemonRepository.pokePokemon()" type="text" placeholder="search..">
+        </form>
+    </nav>
+
 
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

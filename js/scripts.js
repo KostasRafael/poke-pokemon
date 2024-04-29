@@ -110,6 +110,7 @@ let pokemonRepository = (function () {
       })
       .then(function (details) {
         item.image = details.sprites.front_default;
+        item.imageUrlBack = details.sprites.back_default;
         item.height = details.height;
         item.weight = details.weight;
         item.types = details.types.map((type) => type.type.name).join(', ');
@@ -126,6 +127,24 @@ let pokemonRepository = (function () {
       });
   }
 
+  function pokePokemon() {
+    let input = document.getElementById('pokemon-input').value;
+    let x = document.getElementsByClassName('list-group-item');
+
+    for (i = 0; i < x.length; i++) {
+      if (!x[i].innerHTML.includes(input)) {
+        x[i].style.display = "none";
+      }
+      else {
+        x[i].style.display = "list-item";
+      }
+    }
+  }
+
+
+
+  
+
   return {
     getAll: getAll,
     add: add,
@@ -135,6 +154,7 @@ let pokemonRepository = (function () {
     showLoadingMessage: showLoadingMessage,
     hideLoadingMessage: hideLoadingMessage,
     showModal: showModal,
+    pokePokemon: pokePokemon
   };
 })();
 

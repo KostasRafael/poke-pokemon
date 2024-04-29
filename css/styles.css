@@ -17,3 +17,21 @@
   text-align: center;
 }
 
+.logo {
+  width: 10%
+}
+
+.tittle {
+display: inline-block;
+font-size: 2em;
+}
+
+label {
+  font-size: 2em;
+  margin-right: 0.4em;
+}
+
+#pokemon-input {
+  width: 20em;
+}
+
