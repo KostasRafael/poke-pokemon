@@ -2,8 +2,6 @@ let pokemonRepository = (function () {
   let pokemonList = [];
   let apiUrl = "https://pokeapi.co/api/v2/pokemon/";
 
-  let modalContainer = document.querySelector("#exampleModal");
-
   function getAll() {
     return pokemonList;
   }
@@ -12,7 +10,7 @@ let pokemonRepository = (function () {
     pokemonList.push(pokemon);
   }
 
-  function showModal(pokemon, height) {
+  function showModal(pokemon) {
     let modalBody = $(".modal-body");
     let modalTitle = $(".modal-title");
     let modalHeader = $(".modal-header");
