@@ -1,0 +1,16 @@
+{
+  "name": "poke-pokemon",
+  "version": "1.0.0",
+  "description": "![alt text](<Poke-Pokemon App.png>)\r ## Objective\r #### The user can search for pokemons. The user can click on the pokemon of their interest and see a modal with information about the pokemon.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.1.1",
+    "eslint": "^9.1.1",
+    "globals": "^15.1.0"
+  }
+}

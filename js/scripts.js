@@ -1,6 +1,10 @@
-let pokemonRepository = (function () {
-  let pokemonList = [];
-  let apiUrl = "https://pokeapi.co/api/v2/pokemon/";
+/* global $ */
+/* global document */
+/* global fetch */
+/* global console */
+const pokemonRepository = (function () {
+  const pokemonList = [];
+  const apiUrl = "https://pokeapi.co/api/v2/pokemon/";
 
   function getAll() {
     return pokemonList;
@@ -9,27 +13,28 @@ let pokemonRepository = (function () {
   function add(pokemon) {
     pokemonList.push(pokemon);
   }
+  
 
   function showModal(pokemon) {
-    let modalBody = $(".modal-body");
-    let modalTitle = $(".modal-title");
-    let modalHeader = $(".modal-header");
+    const modalBody = $(".modal-body");
+    const modalTitle = $(".modal-title");
+    const modalHeader = $(".modal-header");
 
     modalTitle.empty();
     modalHeader.empty();
     modalBody.empty();
 
-    let nameElement = $("<h1>" + pokemon.name + "</h1>");
-    let imageElementFront = $('<img class="modal-img" style="width:50%">').attr(
+    const nameElement = $("<h1>" + pokemon.name + "</h1>");
+    const imageElementFront = $('<img class="modal-img" style="width:50%">').attr(
       "src",
       pokemon.image
     );
-    let imageElementBack = $('<img class="modal-img" style="width:50%">');
+    const imageElementBack = $('<img class="modal-img" style="width:50%">');
     imageElementBack.attr("src", pokemon.imageUrlBack);
-    let heightElement = $("<p>" + "height: " + pokemon.height + "</p>");
-    let weightElement = $("<p>" + "weight: " + pokemon.weight + "</p>");
-    let typesElement = $("<p>" + "types: " + pokemon.types + "</p>");
-    let abilitiesElement = $(
+    const heightElement = $("<p>" + "height: " + pokemon.height + "</p>");
+    const weightElement = $("<p>" + "weight: " + pokemon.weight + "</p>");
+    const typesElement = $("<p>" + "types: " + pokemon.types + "</p>");
+    const abilitiesElement = $(
       "<p>" + "abilities: " + pokemon.abilities + "</p>"
     );
 
@@ -43,10 +48,10 @@ let pokemonRepository = (function () {
   }
 
   function addListItem(pokemon) {
-    let ul = document.querySelector(".ul");
-    let liUl = document.createElement("li");
+    const ul = document.querySelector(".ul");
+    const liUl = document.createElement("li");
     liUl.classList.add("list-group-item");
-    let button = document.createElement("button");
+    const button = document.createElement("button");
     button.innerText = pokemon.name;
     button.classList.add("pokemon-button");
     button.classList.add("btn");
@@ -61,7 +66,7 @@ let pokemonRepository = (function () {
     ul.appendChild(liUl);
   }
 
-  let loading = document.createElement("h1");
+  const loading = document.createElement("h1");
   loading.innerText = "loading...";
   loading.classList.add("loading-message");
 
@@ -84,7 +89,7 @@ let pokemonRepository = (function () {
       .then((json) => {
         json.results.forEach(function (item) {
           // go in the results, and for each item (object) create a pokemon with the name and the url.
-          let pokemon = {
+          const pokemon = {
             name: item.name,
             detailsUrl: item.url,
           };
@@ -101,7 +106,7 @@ let pokemonRepository = (function () {
 
   function loadDetails(item) {
     pokemonRepository.showLoadingMessage();
-    let url = item.detailsUrl;
+    const url = item.detailsUrl;
     return fetch(url)
       .then(function (response) {
         return response.json();
@@ -116,6 +121,7 @@ let pokemonRepository = (function () {
           .map((ability) => ability.ability.name)
           .join(", ");
       })
+    
 
       .catch(function (e) {
         console.error(e);
@@ -126,10 +132,10 @@ let pokemonRepository = (function () {
   }
 
   function pokePokemon() {
-    let input = document.getElementById('pokemon-input').value;
-    let x = document.getElementsByClassName('list-group-item');
+    const input = document.getElementById('pokemon-input').value;
+    const x = document.getElementsByClassName('list-group-item');
 
-    for (i = 0; i < x.length; i++) {
+    for (let i = 0; i < x.length; i++) {
       if (!x[i].innerHTML.includes(input)) {
         x[i].style.display = "none";
       }
@@ -154,7 +160,7 @@ let pokemonRepository = (function () {
     showModal: showModal,
     pokePokemon: pokePokemon
   };
-})();
+})(); 
 
 pokemonRepository.loadList().then(function () {
   pokemonRepository.getAll().forEach(function (pokemon) {
